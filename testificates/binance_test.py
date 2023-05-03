@@ -2,6 +2,7 @@ from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
 import datetime as dt
 from binance.client import Client
+import sys
 
 client = Client("","")
 
@@ -9,7 +10,7 @@ try:
     result = client.get_historical_klines('BTCUSDT', '1h', '2023-04-01', '2023-04-02')
 except Exception as e:
     print('Exception occured! ', e)
-    quit()
+    sys.exit()
 
 print('# data enties fetched:' , len(result))
 
