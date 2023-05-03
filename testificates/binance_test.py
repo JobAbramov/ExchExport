@@ -1,21 +1,22 @@
-from influxdb_client import InfluxDBClient, Point, WritePrecision
-from influxdb_client.client.write_api import SYNCHRONOUS
 import datetime as dt
 from binance.client import Client
+from binance.enums import KLINE_INTERVAL_1MINUTE, HistoricalKlinesType
 import sys
+from dotenv import get_key
 
-client = Client("","")
+API_KEY = get_key('.env', 'API_KEY')
+API_SECRET = get_key('.env', 'API_SECRET')
+
+client = Client(api_key = API_KEY,api_secret = API_SECRET)
 
 try:
-    result = client.get_historical_klines('BTCUSDT', '1h', '2023-04-01', '2023-04-02')
+    result = client.get_historical_klines('BTCUSDT', KLINE_INTERVAL_1MINUTE, '2023-04-01', '2023-04-02', klines_type = HistoricalKlinesType.SPOT)
 except Exception as e:
     print('Exception occured! ', e)
     sys.exit()
 
-print('# data enties fetched:' , len(result))
-
 for item in result:
-    print('Close price: {}, Volume: {}, Close time: {}'.format(item[4], item[5], dt.datetime.fromtimestamp(item[6] / 1e3)))
+    print('Open time: {}, Open price: {}, High price: {}, Low price: {}, Close price: {}, Volume: {}'.format(dt.datetime.fromtimestamp(item[0] / 1e3), item[1], item[2], item[3], item[4], item[5]))
 
-
+print('# data entries fetched:' , len(result))
 

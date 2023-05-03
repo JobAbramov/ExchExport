@@ -27,4 +27,5 @@ read_api = write_client.query_api()
 query = '''from(bucket: "main")
   |> range(start: -1d)
   |> filter(fn: (r) => r["_measurement"] == "cpu_load")'''
+  
 print(read_api.query(org = ORG, query = query).to_json())
